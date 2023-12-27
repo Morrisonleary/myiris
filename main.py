@@ -3,6 +3,9 @@ import numpy as np
 import sklearn
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
@@ -91,6 +94,30 @@ importances = model.feature_importances_
 
 # Print the feature importances
 for feature, importance in zip(iris_data.feature_names, importances): print(f"{feature}: {importance}")
+
+# Initialize the model
+dt_model = DecisionTreeClassifier(random_state=42)
+rf_model = RandomForestClassifier(random_state=42)
+knn_model = KNeighborsClassifier()
+
+# Train the model 
+dt_model.fit(X_train, y_train)
+rf_model.fit(X_train, y_train)
+knn_model.fit(X_train, y_train)
+
+# Make predictions
+dt_predictions = dt_model.predict(X_test)
+rf_predictions = rf_model.predict(X_test)
+knn_predictions = knn_model.predict(X_test)
+
+# Evaluate accuracy
+dt_accuracy = accuracy_score(y_test, dt_predictions)
+rf_accuracy = accuracy_score(y_test, rf_predictions)
+knn_accuracy = accuracy_score(y_test, knn_predictions)
+
+print(f"Decision Tree Accuracy: {dt_accuracy}")
+print(f"Random Forest Accuracy: {rf_accuracy}")
+print(f"KNN Accuracy: {knn_accuracy}")
 
 # Feature Scaling (Optional)
 # scaler = StandardScaler()
