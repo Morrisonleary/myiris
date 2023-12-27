@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import sklearn
 from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
@@ -82,6 +83,14 @@ y = iris_df['species']
 
 # Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Step 5 Feature Selection Feature Importance with a Decision Tree Model
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+importances = model.feature_importances_
+
+# Print the feature importances
+for feature, importance in zip(iris_data.feature_names, importances): print(f"{feature}: {importance}")
 
 # Feature Scaling (Optional)
 # scaler = StandardScaler()
