@@ -3,8 +3,9 @@ import numpy as np
 import sklearn
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split, cross_val_score
+# from sklearn.ensemble import RandomForestClassifier
+# from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -19,9 +20,10 @@ print("Hello, World!")
 # Load the Iris dataset
 iris_data = load_iris()
 iris_df = pd.DataFrame(iris_data.data, columns=iris_data.feature_names)
+iris_df['species'] = pd.Categorical.from_codes(iris_data.target, iris_data.target_names)
 
 # Add a column for the species, which is our target
-iris_df['species'] = pd.Categorical.from_codes(iris_data.target, iris_data.target_names)
+# iris_df['species'] = pd.Categorical.from_codes(iris_data.target, iris_data.target_names)
 
 # iris_data = load_iris() loads the Iris dataset.
 # pd.DataFrame(iris_data.data, columns=iris_data.feature_names) converts the dataset into a DataFrame. The columns are named after the features of the Iris dataset.
@@ -97,27 +99,33 @@ for feature, importance in zip(iris_data.feature_names, importances): print(f"{f
 
 # Initialize the model
 dt_model = DecisionTreeClassifier(random_state=42)
-rf_model = RandomForestClassifier(random_state=42)
-knn_model = KNeighborsClassifier()
+# rf_model = RandomForestClassifier(random_state=42)
+# knn_model = KNeighborsClassifier()
+
+# Perform Cross-Validation
+scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
 
 # Train the model 
 dt_model.fit(X_train, y_train)
-rf_model.fit(X_train, y_train)
-knn_model.fit(X_train, y_train)
+# rf_model.fit(X_train, y_train)
+# knn_model.fit(X_train, y_train)
 
 # Make predictions
 dt_predictions = dt_model.predict(X_test)
-rf_predictions = rf_model.predict(X_test)
-knn_predictions = knn_model.predict(X_test)
+# rf_predictions = rf_model.predict(X_test)
+# knn_predictions = knn_model.predict(X_test)
 
 # Evaluate accuracy
 dt_accuracy = accuracy_score(y_test, dt_predictions)
-rf_accuracy = accuracy_score(y_test, rf_predictions)
-knn_accuracy = accuracy_score(y_test, knn_predictions)
+# rf_accuracy = accuracy_score(y_test, rf_predictions)
+# knn_accuracy = accuracy_score(y_test, knn_predictions)
 
 print(f"Decision Tree Accuracy: {dt_accuracy}")
-print(f"Random Forest Accuracy: {rf_accuracy}")
-print(f"KNN Accuracy: {knn_accuracy}")
+# print(f"Random Forest Accuracy: {rf_accuracy}")
+# print(f"KNN Accuracy: {knn_accuracy}")
+
+# Calculate and print the mean and standard deviation of the scores
+print(f"Accuracy: {scores.mean():.2f} (+/- {scores.std() * 2:.2f})")
 
 # Feature Scaling (Optional)
 # scaler = StandardScaler()
